@@ -1,0 +1,34 @@
+# Python & Django
+*.pyc
+*.pyo
+__pycache__/
+db.sqlite3
+env/
+venv/
+*.sqlite3
+*.log
+
+# Django Static & Media Files
+staticfiles/
+media/
+
+# Environment Variables & Secrets
+.env
+config/settings/local.py
+
+# Node & Tailwind (npm)
+node_modules/
+npm-debug.log
+package-lock.json
+.pnpm-debug.log
+
+# Tailwind Build Files
+static/css/output.css
+postcss.config.js
+tailwind.config.js
+
+# IDE / OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

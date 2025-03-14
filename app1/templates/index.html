@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithmic Trading</title>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-900 text-white p-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold">AlgoTradeIND</h1>
+            <nav>
+                <ul class="hidden md:flex space-x-6">
+                    <li><a href="#" class="hover:text-gray-300">Home</a></li>
+                    <li><a href="#" class="hover:text-gray-300">Portfolio</a></li>
+                </ul>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <button 
+                id="menu-toggle" 
+                class="md:hidden block text-white focus:outline-none"
+                hx-on:click="toggleMenu()"
+            >
+                ☰
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-blue-800 p-3">
+            <ul class="space-y-2 text-center">
+                <li><a href="#" class="block text-white hover:text-gray-300">Home</a></li>
+                <li><a href="#" class="block text-white hover:text-gray-300">Portfolio</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="text-center py-16 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Experience Algorithmic Trading Visually</h2>
+        <p class="mt-4 text-lg max-w-lg mx-auto">Leverage Algorithmic Trading to make smart trading decisions in the Indian stock market.</p>
+        <a href="#" class="mt-6 inline-block bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-200">
+            Search for Stocks
+        </a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto text-center">
+            <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Why Choose AlgoTradeIND?</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                <div class="p-6 bg-white shadow-md rounded-lg">
+                    <h4 class="text-lg md:text-xl font-semibold">Live Paper Trading</h4>
+                    <p class="mt-2 text-gray-600">Market Hours only</p>
+                </div>
+                <div class="p-6 bg-white shadow-md rounded-lg">
+                    <h4 class="text-lg md:text-xl font-semibold">Simulated Paper Trading</h4>
+                    <p class="mt-2 text-gray-600">Anytime</p>
+                </div>
+                <div class="p-6 bg-white shadow-md rounded-lg">
+                    <h4 class="text-lg md:text-xl font-semibold">Visualizations</h4>
+                    <p class="mt-2 text-gray-600">Visualize indicators</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- <footer class="bg-gray-900 text-white text-center py-4">
+        Neston Cabral
+    </footer> -->
+
+    <!-- HTMX Toggle Script -->
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+    </script>
+
+</body>
+</html>
