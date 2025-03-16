@@ -1,85 +1,55 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algorithmic Trading</title>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <link href="{% static 'css/output.css' %}" rel="stylesheet">
-    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-</head>
-<body class="bg-gray-100">
+{% extends 'base.html' %}
 
-    <!-- Header -->
-    <header class="bg-blue-900 text-white p-5">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl md:text-2xl font-bold">AlgoTradeIND</h1>
-            <nav>
-                <ul class="hidden md:flex space-x-6">
-                    <li><a href="#" class="hover:text-gray-300">Home</a></li>
-                    <li><a href="#" class="hover:text-gray-300">Portfolio</a></li>
-                </ul>
-            </nav>
-            <!-- Mobile Menu Button -->
-            <button 
-                id="menu-toggle" 
-                class="md:hidden block text-white focus:outline-none"
-                hx-on:click="toggleMenu()"
-            >
-                ☰
-            </button>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-blue-800 p-3">
-            <ul class="space-y-2 text-center">
-                <li><a href="#" class="block text-white hover:text-gray-300">Home</a></li>
-                <li><a href="#" class="block text-white hover:text-gray-300">Portfolio</a></li>
-            </ul>
-        </div>
-    </header>
-
+{% block content%}
     <!-- Hero Section -->
-    <section class="text-center py-16 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-        <h2 class="text-3xl md:text-4xl font-extrabold">Experience Algorithmic Trading Visually</h2>
-        <p class="mt-4 text-lg max-w-lg mx-auto">Leverage Algorithmic Trading to make smart trading decisions in the Indian stock market.</p>
-        <a href="#" class="mt-6 inline-block bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-200">
-            Search for Stocks
-        </a>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-12 px-4">
-        <div class="container mx-auto text-center">
-            <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Why Choose AlgoTradeIND?</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                <div class="p-6 bg-white shadow-md rounded-lg">
-                    <h4 class="text-lg md:text-xl font-semibold">Live Paper Trading</h4>
-                    <p class="mt-2 text-gray-600">Market Hours only</p>
-                </div>
-                <div class="p-6 bg-white shadow-md rounded-lg">
-                    <h4 class="text-lg md:text-xl font-semibold">Simulated Paper Trading</h4>
-                    <p class="mt-2 text-gray-600">Anytime</p>
-                </div>
-                <div class="p-6 bg-white shadow-md rounded-lg">
-                    <h4 class="text-lg md:text-xl font-semibold">Visualizations</h4>
-                    <p class="mt-2 text-gray-600">Visualize indicators</p>
-                </div>
+    <section class="relative py-20 px-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute inset-0 bg-pattern"></div>
+        </div>
+        <div class="container mx-auto relative z-10">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-extrabold leading-tight mb-6">Experience Algorithmic Trading Visually</h2>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-blue-100 leading-relaxed">Leverage Algorithmic Trading to make smart trading decisions in the Indian stock market.</p>
+                <a href="#" class="mt-8 inline-block bg-white text-blue-700 px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-50 transform hover:-translate-y-1 transition duration-300 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50">
+                    Search for Stocks
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <!-- <footer class="bg-gray-900 text-white text-center py-4">
-        Neston Cabral
-    </footer> -->
-
-    <!-- HTMX Toggle Script -->
-    <script>
-        function toggleMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        }
-    </script>
-
-</body>
-</html>
+    <!-- Features Section -->
+    <section class="py-16 px-4 bg-white">
+        <div class="container mx-auto">
+            <h3 class="text-2xl md:text-4xl font-bold text-gray-800 text-center mb-12">Why Choose <span class="text-blue-600">AlgoTradeIND</span>?</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                <div class="p-8 bg-white border border-gray-100 rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                    <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center text-gray-800 mb-3">Live Paper Trading</h4>
+                    <p class="text-gray-600 text-center">Market Hours only</p>
+                </div>
+                <div class="p-8 bg-white border border-gray-100 rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                    <div class="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center text-gray-800 mb-3">Simulated Paper Trading</h4>
+                    <p class="text-gray-600 text-center">Anytime</p>
+                </div>
+                <div class="p-8 bg-white border border-gray-100 rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                    <div class="bg-purple-100 text-purple-600 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center text-gray-800 mb-3">Visualizations</h4>
+                    <p class="text-gray-600 text-center">Visualize indicators</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
