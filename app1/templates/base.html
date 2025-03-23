@@ -22,13 +22,12 @@
                 <!-- Navigation that adapts to screen size -->
                 <nav>
                     <button 
-                        id="menu-toggle" 
-                        class="md:hidden block text-white focus:outline-none p-2 rounded-lg hover:bg-blue-700 transition duration-200"
-                        hx-on:click="document.getElementById('nav-items').classList.toggle('hidden')"
-                    >
-                        ☰
+                    id="menu-toggle" 
+                    class="md:hidden block text-white focus:outline-none p-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                    onclick="document.getElementById('nav-items').classList.toggle('hidden')"
+                >
+                    ☰
                     </button>
-                    
                     <ul id="nav-items" class="hidden md:flex md:space-x-8 md:flex-row flex-col space-y-3 md:space-y-0 absolute md:relative right-0 left-0 md:left-auto md:right-auto bg-blue-800 md:bg-transparent p-5 md:p-0 text-center md:text-left mt-5 md:mt-0 z-50 rounded-b-lg shadow-lg md:shadow-none">
                         <li><a href="{% url 'home' %}" class="block md:inline py-2 px-3 hover:text-blue-200 transition duration-200 font-medium">Home</a></li>
                         <li><a href="#" class="block md:inline py-2 px-3 hover:text-blue-200 transition duration-200 font-medium">Service 1</a></li>
