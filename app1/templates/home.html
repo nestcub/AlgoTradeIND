@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content%}
+{% block content %}
     <!-- Hero Section -->
     <section class="relative py-20 px-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white overflow-hidden">
         <div class="absolute inset-0 opacity-20">
@@ -10,9 +10,11 @@
             <div class="max-w-3xl mx-auto text-center">
                 <h2 class="text-3xl md:text-5xl font-extrabold leading-tight mb-6">Experience Algorithmic Trading Visually</h2>
                 <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-blue-100 leading-relaxed">Leverage Algorithmic Trading to make smart trading decisions in the Indian stock market.</p>
-                <a href="#" class="mt-8 inline-block bg-white text-blue-700 px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-50 transform hover:-translate-y-1 transition duration-300 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50">
-                    Search for Stocks
+                <a href="{% url 'get_started' %}" 
+                    class="mt-8 inline-block bg-white text-blue-700 px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-50 transform hover:-translate-y-1 transition duration-300 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50">
+                    Get Started
                 </a>
+             
             </div>
         </div>
     </section>
