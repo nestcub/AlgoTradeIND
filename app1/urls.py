@@ -3,7 +3,6 @@ from .views import get_started, stock_prices
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    # path('', home, name='home'),
     path('', TemplateView.as_view(template_name='home.html'),name='home'),
     path('get_started/', get_started, name='get_started'),
     path('stock-prices/', stock_prices, name='stock_prices'),

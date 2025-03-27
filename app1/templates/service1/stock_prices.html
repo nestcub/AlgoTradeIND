@@ -1,31 +1,50 @@
+<!-- templates/stock_signals.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- Live Stock Prices Section -->
     <section class="py-8 md:py-16 px-4 bg-gradient-to-b from-white to-blue-50">
         <div class="container mx-auto space-x-2">
             <h2 class="text-3xl md:text-5xl font-extrabold text-center mt-12 mb-12">
-                Live <span class="text-blue-600">Stock Prices</span>
+                Live <span class="text-blue-600">Stock Signals</span>
             </h2>
-            <!-- Centered table container -->
-            <div class="overflow-hidden mx-auto w-full max-w-4xl transition-all duration-300 hover:shadow-xl flex justify-center">
+            
+            <div class="overflow-hidden mx-auto w-full max-w-6xl transition-all duration-300 hover:shadow-xl border-gray-500">
                 <div class="overflow-x-auto w-full">
                     <table class="w-full border-collapse border-gray-600">
                         <thead>
                             <tr class="bg-blue-600">
-                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white tracking-wider">Stock</th>
-                                <th class="py-4 px-6 text-right md:text-left text-sm md:text-base font-semibold text-white tracking-wider border-b border-gray-200">Price</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Stock</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Price</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Action</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Target</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">RSI</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Support</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Resistance</th>
                             </tr>
                         </thead>
                         <tbody id="stock-prices">
-                            <!-- Stock prices will be inserted here dynamically -->
+                            {% for ticker, signal in signals.items %}
+                            <tr id="{{ ticker }}" class="hover:bg-blue-50 transition-colors duration-150 border-b border-gray-200">
+                                <td class="py-4 px-6 font-medium text-sm md:text-base">{{ ticker }}</td>
+                                <td class="py-4 px-6 text-blue-600 font-bold text-sm md:text-base price">₹{{ signal.current_price }}</td>
+                                <td class="py-4 px-6 text-sm md:text-base">
+                                    <span class="{% if signal.action == 'BUY' %}text-green-600{% elif signal.action == 'SELL' %}text-red-600{% else %}text-gray-600{% endif %} font-medium">
+                                        {{ signal.action }}
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-sm md:text-base">₹{{ signal.target_price }}</td>
+                                <td class="py-4 px-6 text-sm md:text-base">{{ signal.rsi }}</td>
+                                <td class="py-4 px-6 text-sm md:text-base">₹{{ signal.support }}</td>
+                                <td class="py-4 px-6 text-sm md:text-base">₹{{ signal.resistance }}</td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
             
             <div class="text-center mt-6 text-sm text-gray-500">
-                <p>Data updates in real-time via secure WebSocket connection</p>
+                <p>Real-time prices via WebSocket | Signals last updated: {{ last_updated }}</p>
             </div>
         </div>
     </section>
@@ -36,27 +55,30 @@
         socket.onmessage = function(event) {
             const data = JSON.parse(event.data);
             const stockPrices = document.getElementById('stock-prices');
-
             let row = document.getElementById(data.symbol);
+            
             if (!row) {
+                // Create new row if symbol doesn't exist
                 row = document.createElement('tr');
                 row.id = data.symbol;
                 row.className = "hover:bg-blue-50 transition-colors duration-150 border-b border-gray-200";
-                
-                // Determine if price is positive or negative (assuming you might add this feature later)
-                const priceClass = "text-blue-600";
-                
                 row.innerHTML = `
-                    <td class="py-4 px-6 font-medium text-sm md:text-base border-b border-gray-200">${data.symbol}</td>
-                    <td class="py-4 px-6 ${priceClass} font-bold text-sm md:text-base text-right md:text-left price border-b border-gray-200">₹${parseFloat(data.price).toFixed(2)}</td>
+                    <td class="py-4 px-6 font-medium text-sm md:text-base">${data.symbol}</td>
+                    <td class="py-4 px-6 text-blue-600 font-bold text-sm md:text-base price">₹${parseFloat(data.price).toFixed(2)}</td>
+                    <td class="py-4 px-6 text-sm md:text-base"><span class="text-gray-600 font-medium">N/A</span></td>
+                    <td class="py-4 px-6 text-sm md:text-base">N/A</td>
+                    <td class="py-4 px-6 text-sm md:text-base">N/A</td>
+                    <td class="py-4 px-6 text-sm md:text-base">N/A</td>
+                    <td class="py-4 px-6 text-sm md:text-base">N/A</td>
                 `;
                 stockPrices.appendChild(row);
             } else {
+                // Update existing row's price
                 const priceElement = row.querySelector('.price');
                 const oldPrice = parseFloat(priceElement.textContent.replace('₹', ''));
                 const newPrice = parseFloat(data.price);
                 
-                // Add animation class based on price change
+                // Price change animation
                 if (newPrice > oldPrice) {
                     priceElement.classList.add('animate-pulse', 'text-green-600');
                     setTimeout(() => priceElement.classList.remove('animate-pulse', 'text-green-600'), 1000);
@@ -69,13 +91,12 @@
             }
         };
         
-        // Handle connection errors
         socket.onerror = function(error) {
             console.error('WebSocket Error:', error);
             const stockPrices = document.getElementById('stock-prices');
             stockPrices.innerHTML = `
                 <tr>
-                    <td colspan="2" class="py-8 px-6 text-center text-red-500 border-b border-gray-200">
+                    <td colspan="7" class="py-8 px-6 text-center text-red-500 border-b border-gray-200">
                         <p class="font-medium">Connection error</p>
                         <p class="text-sm mt-2">Unable to connect to stock price service</p>
                     </td>
