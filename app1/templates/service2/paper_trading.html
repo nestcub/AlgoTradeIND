@@ -1,6 +1,153 @@
-<!-- templates/stock_signals.html -->
+<!-- templates/service2/paper_trading.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>Paper trading module</h3>
+    <section class="py-8 md:py-16 px-4 bg-gradient-to-b from-white to-blue-50">
+        <div class="container mx-auto space-x-2">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-center mt-12 mb-12">
+                Paper <span class="text-blue-600">Trading</span>
+            </h2>
+
+            <!-- Account Balance -->
+            <div class="text-center mb-6">
+                <p class="text-lg font-semibold">Balance: ₹{{ account.balance|floatformat:2 }}</p>
+            </div>
+
+            <!-- Trading Table -->
+            <div class="overflow-hidden mx-auto w-full max-w-6xl transition-all duration-300 hover:shadow-xl">
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full border-collapse border-gray-600">
+                        <thead>
+                            <tr class="bg-blue-600">
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Stock</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Price</th>
+                                <th class="py-4 px-6 text-left text-sm md:text-base font-semibold text-white">Trade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stock-prices">
+                            {% for ticker, signal in signals.items %}
+                            <tr id="{{ ticker }}" class="hover:bg-blue-50 transition-colors duration-150 border-b border-gray-200">
+                                <td class="py-4 px-6 font-medium text-sm md:text-base">{{ ticker }}</td>
+                                <td class="py-4 px-6 text-blue-600 font-bold text-sm md:text-base price">₹{{ signal.current_price }}</td>
+                                <td class="py-4 px-6 text-sm md:text-base">
+                                    <form method="post" action="{% url 'trade_stock' %}" class="flex space-x-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="symbol" value="{{ ticker }}">
+                                        <input type="hidden" name="price" value="{{ signal.current_price }}">
+                                        <input type="number" name="quantity" min="1" class="w-16 p-1 border rounded" placeholder="Qty">
+                                        <button type="submit" name="action" value="BUY" class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">Buy</button>
+                                        <button type="submit" name="action" value="SELL" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Sell</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Portfolio -->
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-center mb-6">Portfolio</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border-gray-600">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="py-3 px-6 text-left">Stock</th>
+                                <th class="py-3 px-6 text-left">Quantity</th>
+                                <th class="py-3 px-6 text-left">Avg. Buy Price</th>
+                                <th class="py-3 px-6 text-left">Current Value</th>
+                                <th class="py-3 px-6 text-left">Profit/Loss</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in portfolio_data %}
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6">{{ item.symbol }}</td>
+                                <td class="py-3 px-6">{{ item.quantity }}</td>
+                                <td class="py-3 px-6">₹{{ item.avg_buy_price|floatformat:2 }}</td>
+                                <td class="py-3 px-6">₹{{ item.current_value|floatformat:2 }}</td>
+                                <td class="py-3 px-6 {% if item.profit_loss > 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                                    ₹{{ item.profit_loss|floatformat:2 }}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5" class="py-3 px-6 text-center">No holdings yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-center mb-6">Transaction History</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border-gray-600">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="py-3 px-6 text-left">Date</th>
+                                <th class="py-3 px-6 text-left">Type</th>
+                                <th class="py-3 px-6 text-left">Stock</th>
+                                <th class="py-3 px-6 text-left">Quantity</th>
+                                <th class="py-3 px-6 text-left">Price</th>
+                                <th class="py-3 px-6 text-left">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trans in transactions %}
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6">{{ trans.timestamp }}</td>
+                                <td class="py-3 px-6 {{ trans.transaction_type|lower }}-color">{{ trans.transaction_type }}</td>
+                                <td class="py-3 px-6">{{ trans.symbol }}</td>
+                                <td class="py-3 px-6">{{ trans.quantity }}</td>
+                                <td class="py-3 px-6">₹{{ trans.price|floatformat:2 }}</td>
+                                <td class="py-3 px-6">₹{{ trans.total_amount|floatformat:2 }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="6" class="py-3 px-6 text-center">No transactions yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-center mt-6 text-sm text-gray-500">
+                <p>Real-time prices via WebSocket</p>
+                {% if error %}<p class="text-red-500">{{ error }}</p>{% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- WebSocket Script -->
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/stock-prices/');
+        
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            let row = document.getElementById(data.symbol);
+            if (row) {
+                const priceElement = row.querySelector('.price');
+                const oldPrice = parseFloat(priceElement.textContent.replace('₹', ''));
+                const newPrice = parseFloat(data.price);
+                
+                if (newPrice > oldPrice) {
+                    priceElement.classList.add('animate-pulse', 'text-green-600');
+                    setTimeout(() => priceElement.classList.remove('animate-pulse', 'text-green-600'), 1000);
+                } else if (newPrice < oldPrice) {
+                    priceElement.classList.add('animate-pulse', 'text-red-600');
+                    setTimeout(() => priceElement.classList.remove('animate-pulse', 'text-red-600'), 1000);
+                }
+                
+                priceElement.textContent = `₹${newPrice.toFixed(2)}`;
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    .buy-color { color: green; }
+    .sell-color { color: red; }
+</style>
 {% endblock %}
