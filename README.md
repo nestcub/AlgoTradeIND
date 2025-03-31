@@ -23,7 +23,7 @@ AlgoTradeIND is a stock trading web application that provides **real-time price 
 
 ### **1. Clone the Repository**  
 ```bash
-git clone [project_url]
+git clone https://github.com/nestcub/AlgoTradeIND.git
 cd AlgoTradeIND
 ```
 
