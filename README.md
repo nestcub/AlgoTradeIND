@@ -82,7 +82,7 @@ python manage.py runserver
    http://127.0.0.1:8000/admin/
    ```
 2. Log in with the **superuser credentials** you created.  
-3. Create a **user account** in the admin panel.  
+3. Create a **user, add it to accounts** in the admin panel.  
 
 ---
 
