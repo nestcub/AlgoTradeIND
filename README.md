@@ -83,7 +83,7 @@ python manage.py runserver
 
 ---
 
-### **6. Configure the Admin Panel**  
+### **6. Configure the Admin Panel [Skip this step if skipped step 3]**  
 
 1. Open your browser and go to:  
    ```
@@ -94,7 +94,7 @@ python manage.py runserver
 
 ---
 
-### **7. Update `views.py`**  
+### **7. Update `views.py` [Skip this step if skipped step 3] **  
 
 Modify the following line in `views.py` to match the **username** you created in the admin panel.  
 This line appears **twice** in different functions:  
