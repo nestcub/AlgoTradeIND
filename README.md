@@ -11,6 +11,14 @@ AlgoTradeIND is a stock trading web application that provides **real-time price 
 
 ---
 
+## **Usage**  
+
+- **Live price updates** and **signal generation** are available even **without** the database setup.  
+- If you only need real-time stock prices and trading signals, **you can skip the database setup**.  
+- For full paper trading functionality, complete the **admin panel setup and user account creation**.  
+
+---
+
 ## **Getting Started**  
 
 ### **1. Clone the Repository**  
@@ -35,7 +43,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-### **3. Set Up SQLite Database**  
+### **3. Set Up SQLite Database [ Skip to step 4 to avoid current database setup]**
 
 Run the following commands to set up the database:  
 ```bash
@@ -96,14 +104,6 @@ dummy_user = User.objects.get(username='test1')  # Change 'test1' to your create
 ```
 
 Once updated, you can now run the **paper trading model**.
-
----
-
-## **Usage**  
-
-- **Live price updates** and **signal generation** are available even **without** the database setup.  
-- If you only need real-time stock prices and trading signals, **you can skip the database setup**.  
-- For full paper trading functionality, complete the **admin panel setup and user account creation**.  
 
 ---
 
