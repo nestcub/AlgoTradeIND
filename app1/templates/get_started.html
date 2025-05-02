@@ -1,17 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container text-center mx-auto px-4 py-16">
-    <h1 class="text-3xl text-gray-800 font-bold mb-6 md:text-4xl">Choose a Service</h1>
-    <div class="flex flex-col justify-center gap-6 md:flex-row">
-        <a href="{% url 'stock_prices' %}" 
-           class="bg-blue-600 rounded-lg shadow-md text-white duration-300 hover:bg-blue-700 px-6 py-3 transition">
-            Service 1
-        </a>
-        <a href="{% url 'paper_trading' %}" 
-           class="bg-green-600 rounded-lg shadow-md text-white duration-300 hover:bg-green-700 px-6 py-3 transition">
-            Service 2
-        </a>
+<div class="container mx-auto px-4 py-20">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-4xl text-gray-800 font-bold mb-12 text-center tracking-tight md:text-5xl">You need to first understand</h1>
+        
+        <!-- Introduction to Technical Indicators -->
+        <div class="bg-white rounded-xl p-8 border border-gray-400 ">
+            <h2 class="text-2xl text-gray-800 font-semibold mb-4 flex items-center">           
+                Technical Indicators
+            </h2>
+            <p class="text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                Technical indicators are mathematical calculations based on a stock's price and volume, used to predict future price movements. They help traders identify trends, momentum, and potential buy or sell opportunities. Our services leverage indicators like MACD, RSI, and EMA to provide actionable insights.
+            </p>
+        </div>
+
+        <!-- Strategy Explanation -->
+        <div class="mb-20 bg-white rounded-xl shadow-sm p-8 border border-gray-400 mt-5">
+            <h2 class="text-2xl text-gray-800 font-semibold mb-4 flex items-center">
+                Our Trading Strategy
+            </h2>
+            <p class="text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                As a user, you'll benefit from a strategy that combines multiple technical indicators for reliable trading signals. We use the MACD (Moving Average Convergence Divergence) to identify momentum shifts, RSI (Relative Strength Index) to gauge overbought or oversold conditions, and EMA (Exponential Moving Average) crossovers to confirm trends. Additionally, we calculate support and resistance levels to set safe entry and exit points. For example, a "BUY" signal is generated when a golden cross occurs (short-term EMA crosses above long-term EMA), MACD shows bullish momentum, and RSI indicates the stock isn't overbought—helping you enter trades with confidence.
+            </p>
+        </div>
+
+        <h1 class="text-4xl text-gray-800 font-bold mb-12 text-center tracking-tight md:text-5xl">Try it out now</h1>
+
+        <!-- Services Section with Vertical Arrangement -->
+        <div class="flex flex-col justify-center items-stretch">
+            <!-- Signal Generation Service -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] mt-5">
+                <div class="p-8 flex flex-col h-full space-y-8">
+                    <!-- <h3 class="text-xl font-semibold text-gray-800 mb-4"></h3>
+                    <p class="text-gray-600 mb-8 flex-grow">
+                    </p>
+                    <hr class="border-t border-gray-400 mt-5"> -->
+                    <a href="{% url 'services' %}" 
+                       class="block bg-blue-600 rounded-lg shadow-md text-white duration-300 hover:bg-blue-700 hover:shadow-lg px-6 py-4 transition text-center font-medium mt-5">
+                        Services
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

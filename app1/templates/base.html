@@ -30,25 +30,26 @@
                     </button>
                     <ul id="nav-items" class="hidden md:flex md:space-x-8 md:flex-row flex-col space-y-3 md:space-y-0 absolute md:relative right-0 left-0 md:left-auto md:right-auto bg-blue-800 md:bg-transparent p-5 md:p-0 text-center md:text-left mt-5 md:mt-0 z-50 rounded-b-lg shadow-lg md:shadow-none">
                         <li><a href="{% url 'home' %}" class="block md:inline py-2 px-3 hover:text-blue-200 transition duration-200 font-medium">Home</a></li>
-                        <li><a href="#" class="block md:inline py-2 px-3 hover:text-blue-200 transition duration-200 font-medium">Service 1</a></li>
-                        <li><a href="#" class="block md:inline py-2 px-3 hover:text-blue-200 transition duration-200 font-medium">Service 2</a></li>
+                        <li><a href="{% url 'services' %}" class="block md:inline py-2 px-3 hover:text-blue-200 transition duration-200 font-medium">Services</a></li>
+                        <!-- <li><a href="#" class="block md:inline py-2 px-3 hover:text-blue-200 transition duration-200 font-medium">Service 2</a></li> -->
                     </ul>
                 </nav>
             </div>
         </div>
+        {% block extra_head %}{% endblock %}
     </header>
     {% block content %}{% endblock %}
     <div id="content"></div>
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white text-center py-4">
+    <!-- <footer class="bg-gray-900 text-white text-center py-4">
         Neston Cabral
-    </footer>
+    </footer> -->
 
-    <style>
+    <!-- <style>
         .bg-pattern {
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-    </style>
+    </style> -->
 
 </body>
 </html>

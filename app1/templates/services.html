@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-20">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-4xl text-gray-800 font-bold mb-12 text-center tracking-tight md:text-5xl">Choose a service</h1>
+
+        <!-- Services Section with Vertical Arrangement -->
+        <div class="flex flex-col justify-center items-stretch">
+            <!-- Signal Generation Service -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] mt-5">
+                <div class="p-8 flex flex-col h-full space-y-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Signal Generation</h3>
+                    <p class="text-gray-600 mb-8 flex-grow">
+                        This service uses yfinance to analyze 60 days of historical stock data, generating clear buy/sell signals based on advanced technical indicators. With real-time stock price updates via yliveticker WebSocket connections, you'll get timely insights to make informed trading decisions. Perfect for beginners, this service simplifies the process of identifying opportunities in equity trading, helping you build confidence as you start your investment journey.
+                    </p>
+                    <hr class="border-t border-gray-400 mt-5">
+                    <a href="{% url 'stock_prices' %}" 
+                       class="block bg-blue-600 rounded-lg shadow-md text-white duration-300 hover:bg-blue-700 hover:shadow-lg px-6 py-4 transition text-center font-medium mt-5">
+                        View Signals
+                    </a>
+                </div>
+            </div>
+
+            <!-- Manual Paper Trading Service -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] mt-5">
+                <div class="p-8 flex flex-col h-full">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Manual Paper Trading</h3>
+                    <p class="text-gray-600 mb-8 flex-grow">
+                        Practice trading without risking real money! This service lets you buy and sell stocks using dynamically generated trading signals, all while tracking live stock prices through yliveticker WebSocket connections. It's an ideal starting point for beginners to learn the ropes of equity trading or test strategies for long-term investments, giving you a safe space to gain experience and develop your trading skills.
+                    </p>
+                    <hr class="border-t border-gray-400 mt-5">
+                    <a href="{% url 'paper_trading' %}" 
+                       class="block bg-green-600 rounded-lg shadow-md text-white duration-300 hover:bg-green-700 hover:shadow-lg px-6 py-4 transition text-center font-medium mt-5">
+                        Start Trading
+                    </a>
+                </div>
+            </div>
+
+            <!-- Static Charts Service -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] mt-5">
+                <div class="p-8 flex flex-col h-full">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Static Charts</h3>
+                    <p class="text-gray-600 mb-8 flex-grow">
+                        Visualize your trading strategy with static charts that illustrate technical indicator crossovers, such as EMA, MACD, and RSI. These charts help you see how golden crosses or death crosses occur, making it easier to understand buy/sell signals and improve your decision-making. Ideal for beginners to learn and analyze trends before diving into live trading.
+                    </p>
+                    <hr class="border-t border-gray-400 mt-5">
+                    <a href="{% url 'static_charts' %}" 
+                    class="block bg-green-600 rounded-lg shadow-md text-white duration-300 hover:bg-green-700 hover:shadow-lg px-6 py-4 transition text-center font-medium mt-5">
+                        View Charts
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

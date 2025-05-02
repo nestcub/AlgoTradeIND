@@ -60,7 +60,7 @@ def stock_prices(request):
         'tickers': tickers
     }
     
-    return render(request, 'service1/stock_prices.html', context)
+    return render(request, 'services/stock_prices.html', context)
 
 
 from .models import Account, Portfolio, Transaction
@@ -112,7 +112,7 @@ def paper_trading_view(request):
         'portfolio_data': portfolio_data,  # Precomputed portfolio data
         'transactions': transactions,
     }
-    return render(request, 'service2/paper_trading.html', context)
+    return render(request, 'services/paper_trading.html', context)
 
 @transaction.atomic
 def trade_stock(request):
@@ -146,7 +146,7 @@ def trade_stock(request):
                 account.save()
                 portfolio.save()
             else:
-                return render(request, 'service2/paper_trading.html', {'error': 'Insufficient balance'})
+                return render(request, 'services/paper_trading.html', {'error': 'Insufficient balance'})
         
         elif action == 'SELL':
             portfolio = Portfolio.objects.filter(account=account, symbol=symbol).first()
@@ -165,6 +165,123 @@ def trade_stock(request):
                     portfolio.save()
                 account.save()
             else:
-                return render(request, 'service2/paper_trading.html', {'error': 'Insufficient shares'})
+                return render(request, 'services/paper_trading.html', {'error': 'Insufficient shares'})
     
     return redirect('paper_trading')
+
+
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+def static_charts(request):
+    # Get the ticker list from StockPriceConsumer
+    tickers = Tickers
+    
+    # Dictionary to store results
+    signals = {}
+    # Dictionary to store plot HTML for each ticker
+    plots = {}
+    
+    # Get historical data (last 60 days) for all tickers
+    for ticker in tickers:
+        try:
+            # Download data using yfinance
+            stock_data = yf.download(ticker, period="60d", interval="1d")
+            
+            if not stock_data.empty:
+                # Extract 1D array of closing prices
+                close_prices = stock_data['Close'].values.flatten()
+                
+                # Create a DataFrame with just Close prices for consistency
+                df = pd.DataFrame({'Close': close_prices}, index=stock_data.index)
+                # Calculate technical indicators
+                macd, signal = calculate_macd(df)
+                rsi = calculate_rsi(df)
+                ema_short, ema_long = calculate_ema(df)
+                support, resistance = calculate_support_resistance(df)
+                
+                # Get current price (last closing price)
+                entry_price = df['Close'].iloc[-1]
+                
+                # Determine action
+                action, target_price = determine_action(
+                    macd, signal, rsi, ema_short, ema_long, 
+                    entry_price, support
+                )
+                
+                # Store results
+                signals[ticker] = {
+                    'current_price': round(entry_price, 2),
+                    'action': action,
+                    'target_price': round(target_price, 2),
+                    'rsi': round(rsi.iloc[-1], 2),
+                    'support': round(support, 2),
+                    'resistance': round(resistance, 2)
+                }
+                
+                # Create visualization
+                fig = make_subplots(rows=2, cols=1, shared_xaxes=True, 
+                                   vertical_spacing=0.05, 
+                                   row_heights=[0.7, 0.3])
+                
+                # Price chart with EMAs
+                fig.add_trace(go.Scatter(x=df.index, y=df['Close'], 
+                                       name='Price', line=dict(color='blue')), 
+                            row=1, col=1)
+                fig.add_trace(go.Scatter(x=df.index, y=ema_short, 
+                                       name='EMA Short', line=dict(color='orange')), 
+                            row=1, col=1)
+                fig.add_trace(go.Scatter(x=df.index, y=ema_long, 
+                                       name='EMA Long', line=dict(color='green')), 
+                            row=1, col=1)
+                
+                # Add support/resistance lines
+                fig.add_hline(y=support, line_dash="dot", 
+                             annotation_text=f"Support: {support:.2f}", 
+                             line_color="green", row=1, col=1)
+                fig.add_hline(y=resistance, line_dash="dot", 
+                             annotation_text=f"Resistance: {resistance:.2f}", 
+                             line_color="red", row=1, col=1)
+                
+                # MACD
+                fig.add_trace(go.Scatter(x=df.index, y=macd, 
+                                     name='MACD', line=dict(color='blue')), 
+                            row=2, col=1)
+                fig.add_trace(go.Scatter(x=df.index, y=signal, 
+                                     name='Signal', line=dict(color='orange')), 
+                            row=2, col=1)
+                
+                # RSI
+                fig.add_trace(go.Scatter(x=df.index, y=rsi, 
+                                     name='RSI', line=dict(color='purple')), 
+                            row=2, col=1)
+                fig.add_hline(y=30, line_dash="dash", 
+                             annotation_text="Oversold", 
+                             line_color="green", row=2, col=1)
+                fig.add_hline(y=70, line_dash="dash", 
+                             annotation_text="Overbought", 
+                             line_color="red", row=2, col=1)
+                
+                # Update layout
+                fig.update_layout(
+                    height=600,
+                    title=f"{ticker} Technical Analysis",
+                    hovermode="x unified"
+                )
+                
+                # Convert plot to HTML
+                plot_html = fig.to_html(full_html=False)
+                plots[ticker] = plot_html
+                
+        except Exception as e:
+            print(f"Error processing {ticker}: {str(e)}")
+            continue
+    
+    context = {
+        'signals': signals,
+        'plots': plots,  # Make sure this is passed to the template
+        'last_updated': pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'tickers': tickers
+    }
+    
+    return render(request, 'services/static_charts.html', context)
